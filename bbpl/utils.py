@@ -548,6 +548,20 @@ def found_type_in_selection(targetType, include_active=True):
             return True
     return False
 
+def get_bones_from_armature(armature: bpy.types.Object):
+    """
+    Returns the appropriate list of bones from an armature depending on its mode.
+    - In EDIT mode: returns armature.data.edit_bones.
+    - In POSE mode: returns armature.pose.bones.
+    - Otherwise: returns pose bones or regular bones.
+    """
+    if armature.mode == 'EDIT':
+        return armature.data.edit_bones
+    elif armature.mode == 'POSE':
+        return armature.pose.bones
+    else:
+        return armature.data.bones
+
 def get_bone_path(armature: bpy.types.Object, start_bone_name: str, end_bone_name: str):
     """
     Returns a list of bone names between start_bone and end_bone in an armature.
@@ -559,10 +573,7 @@ def get_bone_path(armature: bpy.types.Object, start_bone_name: str, end_bone_nam
     """
 
     # Access bones directly.
-    if armature.mode == 'EDIT':
-        bones = armature.data.edit_bones
-    else:
-        bones = armature.data.bones
+    bones = get_bones_from_armature(armature)
 
     # Initialize the bones
     start_bone = bones[start_bone_name]
@@ -587,7 +598,6 @@ def get_bone_path(armature: bpy.types.Object, start_bone_name: str, end_bone_nam
     # Start the recursive search
     all_bones = find_path(start_bone, [])
     return all_bones
-
     
 def get_bone_path_to_end(armature: bpy.types.Object, start_bone_name: str):
     """
@@ -599,10 +609,7 @@ def get_bone_path_to_end(armature: bpy.types.Object, start_bone_name: str):
     """
 
     # Access bones directly.
-    if armature.mode == 'EDIT':
-        bones = armature.data.edit_bones
-    else:
-        bones = armature.data.bones
+    bones = get_bones_from_armature(armature)
 
     # Initialize the bones
     start_bone = bones[start_bone_name]
@@ -628,10 +635,7 @@ def get_bone_and_children(armature: bpy.types.Object, start_bone_name: str):
     """
 
     # Access bones directly.
-    if armature.mode == 'EDIT':
-        bones = armature.data.edit_bones
-    else:
-        bones = armature.data.bones
+    bones = get_bones_from_armature(armature)
 
     # Initialize the bones
     bones = armature.data.edit_bones
@@ -648,3 +652,39 @@ def get_bone_and_children(armature: bpy.types.Object, start_bone_name: str):
     # Get all bones starting from the start_bone
     all_bones = collect_children(start_bone)
     return all_bones
+
+def get_bones_name_contains(armature: bpy.types.Object, name_filter: str) -> list[str]:
+    """
+    Returns a list of bones whose names contain the specified substring.
+    """
+    if not name_filter:
+        return []
+
+    # Access bones directly.
+    bones = get_bones_from_armature(armature)
+
+    return [bone.name for bone in bones if name_filter in bone.name]
+
+def get_bones_name_starts_with(armature: bpy.types.Object, name_filter: str) -> list[str]:
+    """
+    Returns a list of bones whose names start with the specified string.
+    """
+    if not name_filter:
+        return []
+
+    # Access bones directly.
+    bones = get_bones_from_armature(armature)
+
+    return [bone.name for bone in bones if bone.name.startswith(name_filter)]
+
+def get_bones_name_ends_with(armature: bpy.types.Object, name_filter: str) -> list[str]:
+    """
+    Returns a list of bones whose names end with the specified string.
+    """
+    if not name_filter:
+        return []
+
+    # Access bones directly.
+    bones = get_bones_from_armature(armature)
+
+    return [bone.name for bone in bones if bone.name.endswith(name_filter)]
