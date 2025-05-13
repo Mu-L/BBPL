@@ -23,17 +23,12 @@
 # ----------------------------------------------
 
 import bpy
-import typing
-from . import types
+import importlib
 
+from . import scene_save
+from . import select_save
 
-def add_ui_accordion(name: str=""):
-    return bpy.props.PointerProperty(type=types.get_layout_accordion_class(), name=name)
-
-def get_accordion(data: typing.Any, property: str) -> types.CustomAccordionUI_PropertyGroup:
-    prop = getattr(data, property, None)
-    if prop is not None and hasattr(prop, "draw"):
-        return prop
-    else:
-        print(f"The property '{property}' was not found.")
-        return None
+if "scene_save" in locals():
+    importlib.reload(scene_save)
+if "select_save" in locals():
+    importlib.reload(select_save)
