@@ -562,7 +562,7 @@ def get_bones_from_armature(armature: bpy.types.Object):
     else:
         return armature.data.bones
 
-def get_bone_path(armature: bpy.types.Object, start_bone_name: str, end_bone_name: str):
+def get_bone_path(armature: bpy.types.Object, start_bone_name: str, end_bone_name: str) -> list[str]:
     """
     Returns a list of bone names between start_bone and end_bone in an armature.
     
@@ -599,7 +599,7 @@ def get_bone_path(armature: bpy.types.Object, start_bone_name: str, end_bone_nam
     all_bones = find_path(start_bone, [])
     return all_bones
     
-def get_bone_path_to_end(armature: bpy.types.Object, start_bone_name: str):
+def get_bone_path_to_end(armature: bpy.types.Object, start_bone_name: str) -> list[str]:
     """
     Returns a list of bone names from the start_bone to the last child in a chain.
     
@@ -625,7 +625,7 @@ def get_bone_path_to_end(armature: bpy.types.Object, start_bone_name: str):
 
     return bone_path
 
-def get_bone_and_children(armature: bpy.types.Object, start_bone_name: str):
+def get_bone_and_children(armature: bpy.types.Object, start_bone_name: str) -> list[str]:
     """
     Returns a list of all descendant bones of the specified start_bone, including all children recursively.
     
@@ -688,3 +688,33 @@ def get_bones_name_ends_with(armature: bpy.types.Object, name_filter: str) -> li
     bones = get_bones_from_armature(armature)
 
     return [bone.name for bone in bones if bone.name.endswith(name_filter)]
+
+def get_bones_name_contains_starts_with(armature: bpy.types.Object, contains_filter: str, startswith_filter: str) -> list[str]:
+    """
+    Match bones whose names contain one string and start with another.
+    """
+    if not contains_filter or not startswith_filter:
+        return []
+
+    # Access bones directly.
+    bones = get_bones_from_armature(armature)
+    
+    return [
+        b.name for b in bones
+        if contains_filter in b.name and b.name.startswith(startswith_filter)
+    ]
+
+def get_bones_name_contains_ends_with(armature: bpy.types.Object, contains_filter: str, endswith_filter: str) -> list[str]:
+    """
+    Match bones whose names contain one string and end with another.
+    """
+    if not contains_filter or not endswith_filter:
+        return []
+
+    # Access bones directly.
+    bones = get_bones_from_armature(armature)
+
+    return [
+        b.name for b in bones
+        if contains_filter in b.name and b.name.endswith(endswith_filter)
+    ]
