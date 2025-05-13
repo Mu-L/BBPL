@@ -576,8 +576,12 @@ def get_bone_path(armature: bpy.types.Object, start_bone_name: str, end_bone_nam
     bones = get_bones_from_armature(armature)
 
     # Initialize the bones
+    if start_bone_name not in bones or end_bone_name not in bones:
+        return []
+
     start_bone = bones[start_bone_name]
     end_bone = bones[end_bone_name]
+
 
     # Depth-First Search to find the path from start_bone to end_bone
     def find_path(current_bone, path):
