@@ -23,9 +23,11 @@
 # ----------------------------------------------
 
 import bpy
-from . import utils
-from ... import __internal__
+import re
 
+from . import utils
+from .. import layout_utils
+from ... import __internal__
 
 class CustomAccordionUI_PropertyGroup(bpy.types.PropertyGroup):
     expend: bpy.props.BoolProperty(
@@ -34,14 +36,19 @@ class CustomAccordionUI_PropertyGroup(bpy.types.PropertyGroup):
         default=False,
         options={"HIDDEN", "SKIP_SAVE"}
     )
-    
+
     def get_name(self):
-        if bpy.app.version >= (3, 0, 0):
-            prop_rna = self.id_data.bl_rna.properties[self.id_properties_ensure().name]
-            return prop_rna.name
-        else:
-            prop_rna = self.id_data.bl_rna.properties[self.path_from_id()]
-            return prop_rna.name
+        return layout_utils.get_property_name_from_property_group(self, CustomAccordionUI_PropertyGroup)
+    
+
+    def support_panel_prop(self, layout: bpy.types.UILayout):
+        # Use panel_prop() was added only in Blender 4.1 and work on UI region.type only.
+        # The BBPL one work since Blender 2.8 on any regions.
+
+        if bpy.app.version >= (4, 1, 0):
+            if bpy.context.region.type == "UI":
+                return True
+        return False
 
 
     def draw(self, layout: bpy.types.UILayout, text = None):
@@ -62,7 +69,7 @@ class CustomAccordionUI_PropertyGroup(bpy.types.PropertyGroup):
             header_text = self.get_name()
 
         # Draw
-        if bpy.app.version >= (4, 1, 0): # Use panel_prop() was added only in Blender 4.1.
+        if self.support_panel_prop(layout): 
             header, panel = layout.panel_prop(self, "expend")
             header.label(text=header_text)
         else:
