@@ -54,7 +54,7 @@ class CustomAccordionUI_PropertyGroup(bpy.types.PropertyGroup):
         return False
 
 
-    def draw(self, layout: bpy.types.UILayout, text = None):
+    def draw(self, layout: bpy.types.UILayout, context: bpy.types.Context, text = None) -> bpy.types.UILayout:
         """Similar to layout.panel_prop(...) Use panel_prop() in Blender 4.1 and new versions.
                 :param layout: layout body
                 :type layout: bpy.types.UILayout
