@@ -44,8 +44,11 @@ def add_string_selector(
     my_string_selector.create_properties()
     return my_string_selector
 
-def draw_string_selector(owner, layout: bpy.types.UILayout, prop_name = "my_prop_id", selector_prop_name = "my_prop_id_selector", icon: str = "PREFERENCES"):
+def draw_string_selector(owner, layout: bpy.types.UILayout, prop_name = "my_prop_id", selector_prop_name = "my_prop_id_selector", icon: str = "PREFERENCES",  text=None):
     row = layout.row(align=True)
-    row.prop(owner, prop_name)
+    if isinstance(text, str):
+        row.prop(owner, prop_name, text=text)
+    else:
+        row.prop(owner, prop_name)
     row.prop(owner, selector_prop_name, text="", icon=icon, icon_only=True)
     return row
