@@ -3,18 +3,26 @@ import bpy
 from typing import List, Callable, Optional, Any
 
 def enum_callback(data: Any, old_var_name: str, new_var_name: str) -> Any:
-    value = data[old_var_name] # Get value ast int
+    value = data[old_var_name] # Get value as int
 
     enum_definition = data.bl_rna.properties.get(new_var_name)
 
     if enum_definition and enum_definition.type == "ENUM":
-        # Get the list of enum values
+        # Get the list of enum values and match by integer value
         for enum_item in enum_definition.enum_items:
             if value == enum_item.value:
                 return enum_item.identifier
-    else:
-        print("La propriété spécifiée n'est pas une énumération.")
-
+        
+        # If no match found by value, try the first enum item as fallback
+        if enum_definition.enum_items:
+            print(f"Warning: Could not find enum value {value} for {new_var_name}, using first enum item")
+            return enum_definition.enum_items[0].identifier
+    
+    print(f"Warning: Could not find enum definition for {new_var_name}")
+    # Return the first enum item's identifier as a safe default
+    if enum_definition and enum_definition.enum_items:
+        return enum_definition.enum_items[0].identifier
+    
     return value
 
 def object_pointer_callback(data: Any, old_var_name: str, new_var_name: str) -> Any:
