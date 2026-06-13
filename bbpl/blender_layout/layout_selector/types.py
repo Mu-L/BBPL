@@ -7,8 +7,10 @@
 #  https://github.com/xavier150/BBPL
 # ----------------------------------------------
 
+from typing import Optional, Callable, Any, Tuple
+
 import bpy
-from typing import Optional, Callable, Any
+
 from ... import __internal__
 
 
@@ -25,6 +27,25 @@ class StringSelector():
         self.update: Optional[Callable[..., None]] = None
         self.string_property: Any = None
         self.enum_selector: Any = None
+
+
+    def get_string_property(self) -> str:
+        '''
+        Returns the StringProperty _PropertyDeferred definition used to declare the property
+        inside a Blender class annotation.
+        use:
+        my_value: selector.get_string_property()
+        '''
+        return self.string_property
+    
+    def get_enum_selector_property(self) -> str:
+        '''
+        Returns the EnumProperty _PropertyDeferred definition used to declare the property
+        inside a Blender class annotation.
+        use:
+        my_value_selector: selector.get_enum_selector_property()
+        '''
+        return self.enum_selector
 
 
     def create_properties(self):
