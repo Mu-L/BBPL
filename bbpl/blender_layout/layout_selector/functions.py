@@ -8,7 +8,7 @@
 # ----------------------------------------------
 
 import bpy
-from typing import List, Callable, Optional
+from typing import List, Callable, Optional, Any
 from . import types
 
 def add_string_selector(
@@ -17,7 +17,7 @@ def add_string_selector(
     default: str="", 
     name: str="", 
     description: str="", 
-    items: List[str] = [], 
+    items: List[Any] = [], 
     update: Optional[Callable[..., None]] = None
 ) -> types.StringSelector:
     my_string_selector = types.StringSelector(property_name, property_selector_name)
