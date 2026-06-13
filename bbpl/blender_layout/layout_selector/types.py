@@ -7,7 +7,7 @@
 #  https://github.com/xavier150/BBPL
 # ----------------------------------------------
 
-from typing import Optional, Callable, Any, Tuple
+from typing import Optional, Callable, Any
 
 import bpy
 
@@ -86,9 +86,11 @@ def update_string_from_enum(self: Any, string_selector: StringSelector):
 def update_selector_from_string(self: Any, string_selector: StringSelector):
     string_name = string_selector.property_name
     selector_name = string_selector.property_selector_name
-    if getattr(self, selector_name) != getattr(self, string_name):
-        setattr(self, selector_name, getattr(self, string_name))
-        #print("Selector update...")
+    new_value = getattr(self, string_name)
+    if getattr(self, selector_name) != new_value:
+        # Update only if the new value exists in the enum items, otherwise keep the previous value (Avoid script errors)
+        if new_value in self.bl_rna.properties[selector_name].enum_items:
+            setattr(self, selector_name, new_value)
 
 classes = (
 )

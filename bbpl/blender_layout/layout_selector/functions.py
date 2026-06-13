@@ -30,7 +30,7 @@ def add_string_selector(
     return my_string_selector
 
 def draw_string_selector(
-        owner: bpy.types.PropertyGroup, 
+        owner: Any, 
         layout: bpy.types.UILayout, 
         prop_name: str = "my_prop_id", 
         selector_prop_name: str = "my_prop_id_selector", 
@@ -38,11 +38,15 @@ def draw_string_selector(
         text: Optional[str] = None
     ) -> bpy.types.UILayout:
 
-    row = layout.row(align=True)
+    prop_layout = layout.column(align=True)
+    row = prop_layout.row(align=True)
+
+    # Draw the properties
     if isinstance(text, str):
         row.prop(owner, prop_name, text=text)
     else:
         row.prop(owner, prop_name)
+    
     row.prop(
         owner, 
         selector_prop_name, 
@@ -50,4 +54,9 @@ def draw_string_selector(
         icon=icon,  # type: ignore
         icon_only=True
         )
-    return row
+    # Draw warning when the property don't match the selector value
+    string_value = getattr(owner, prop_name)
+    if string_value != getattr(owner, selector_prop_name):
+        prop_layout.label(text="Value not in list!", icon="ERROR")
+
+    return prop_layout
