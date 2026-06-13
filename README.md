@@ -1,6 +1,13 @@
-# BleuRaven Blender Python Library
-BBPL (BleuRaven Blender Python Library) is my personal Python Library for Blender use. 
+# BBPL
+BBPL (BleuRaven Blender Python Libraries) is my personal Python Libraries for Blender use.  
 You free to use it, you can also credit me or support my works.
+
+Other BBPL libraries:
+- [BBPL](https://github.com/xavier150/BBPL)
+- [BBPL_PropertyValidity](https://github.com/xavier150/BBPL_PropertyValidity)
+
+Other libraries:
+- [BBAM](https://github.com/xavier150/BBAM)
 
 Discord:
 If you need help or you want see my sides project you can join the discord!
