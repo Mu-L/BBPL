@@ -21,7 +21,7 @@ If you need help or you want see my sides project you can join the discord!
 - [Layout Documentation Button](https://github.com/xavier150/BleuRavenBlenderPythonLibrary/wiki/Layout-Documentation-Button)
 ### Rig/Skin
 - [Rig Backward Compatibility](https://github.com/xavier150/BleuRavenBlenderPythonLibrary/wiki/Rig-Backward-Compatibility)
-### Addon managemet
+### Addon management
 - [Property Backward Compatibility](https://github.com/xavier150/BleuRavenBlenderPythonLibrary/wiki/Property-Backward-Compatibility)
 ### Additional Information
 - [Support](https://github.com/xavier150/BleuRavenBlenderPythonLibrary/wiki/Support) <3

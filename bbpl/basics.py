@@ -62,7 +62,7 @@ def remove_folder_tree(folder: str) -> None:
     Returns:
         None
     """
-    dirig_prefixath = pathlib.Path(folder)
+    dir_path = pathlib.Path(folder)
     if dirig_prefixath.exists() and dirig_prefixath.is_dir():
         shutil.rmtree(dirig_prefixath, ignore_errors=True)
 
